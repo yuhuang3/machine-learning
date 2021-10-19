@@ -49,8 +49,12 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         '''
-        this function transforms a Pandas Series of strings into a DataFrame of True/False values,
+        this function does the following:
+        - transforms a Pandas Series of strings into a DataFrame of True/False values,
         indicating whether or not any sentense in a string starts with Verb. 
+        - one-hot-encode the resulting Series of True/False values
         '''
         X_tagged = pd.Series(X).apply(self.starting_verb)
-        return pd.DataFrame(X_tagged)
+        X_tagged_df = pd.DataFrame(X_tagged)
+        dummies = pd.get_dummies(X_tagged_df[0], prefix='StartingVerb')
+        return dummies
