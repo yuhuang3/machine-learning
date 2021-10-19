@@ -7,6 +7,11 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    '''
+    this function does the following:
+    - load messages dataset
+    - merge datasets
+    '''
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
@@ -16,6 +21,14 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    '''
+    this function does the following:
+    - create a dataframe of the 36 individual category columns
+    - extract a list of new column names for categories
+    - convert the strings of categories into 0/1 integers
+    - concatenate the original dataframe with the new `categories` dataframe
+    - drop duplicates
+    '''
     # create a dataframe of the 36 individual category columns
     categories = df['categories']
     categories = categories.str.split(";", expand=True)
@@ -37,7 +50,14 @@ def clean_data(df):
 
         # convert column from string to numeric
         categories[column] = categories[column].astype(int)
-        
+    
+    # one-hot encoding
+    categories_copy = categories.copy()
+    for column in categories_copy:
+        dummies = pd.get_dummies(categories_copy[column], prefix=column)
+        categories = pd.concat([categories, dummies], sort=False, axis=1)
+        categories = categories.drop([column], axis=1)
+    
     # drop the original categories column from `df`
     df = df.drop(['categories'], axis=1)
     
@@ -50,11 +70,21 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    '''
+    save the dataframe into a table in sqlite database
+    '''
     engine = create_engine('sqlite:///{}'.format(database_filename))
-    df.to_sql('DisasterResponseTable', engine, index=False)  
+    df.to_sql('DisasterResponseTable', engine, index=False, if_exists='replace')  
 
 
 def main():
+    '''
+    this main function does the following:
+    - extract arguments from command line
+    - load data from csv files into Pandas dataframe in memory
+    - clean data
+    - save data into database
+    '''
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]

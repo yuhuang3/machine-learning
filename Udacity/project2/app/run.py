@@ -19,6 +19,12 @@ from StartingVerbExtractor import StartingVerbExtractor
 app = Flask(__name__)
 
 def tokenize(text):
+    '''
+    given a string of texts, this function does the following:
+    - break the string into tokens (words)
+    - get the lemma of each token
+    - change the lemma to lower case and trim spaces 
+    '''
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -41,11 +47,20 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
-    
+    '''
+    this entry point does the following:
+    - extract data needed for visualization
+    - create visuals
+    - encode plotly graphs in JSON
+    - render web page with plotly graphs
+    '''
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+    
+    genre_request_counts = df.groupby('genre').count()['request_0']
+    genre_requests = list(genre_request_counts.index)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -67,6 +82,24 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+        {
+            'data': [
+                Scatter(
+                    x=genre_requests,
+                    y=genre_request_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Request Genres',
+                'yaxis': {
+                    'title': "Request Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
         }
     ]
     
@@ -81,6 +114,12 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    '''
+    this entry point does the following:
+    - save user input in query
+    - use model to predict classification for query
+    - render the go.html
+    '''
     # save user input in query
     query = request.args.get('query', '') 
 

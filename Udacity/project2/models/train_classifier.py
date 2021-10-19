@@ -31,6 +31,13 @@ from StartingVerbExtractor import StartingVerbExtractor
 url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 
 def load_data(database_filepath):
+    '''
+    this function does the following:
+    - load the data into dataframe from database
+    - extract the message column as feature
+    - extract the category columns as targets/labels
+    - return feature, targets/labels, and category names
+    '''
     engine = create_engine('sqlite:///{}'.format(database_filepath))
     df = pd.read_sql_table(
         'DisasterResponseTable',
@@ -38,14 +45,21 @@ def load_data(database_filepath):
     )
 
     X = df['message'].values
-    y = df.loc[:, 'related' : 'direct_report'].values
+    y = df.loc[:, 'related_0' : 'direct_report_1'].values
     
-    category_names = df.loc[:, 'related' : 'direct_report'].columns
+    category_names = df.loc[:, 'related_0' : 'direct_report_1'].columns
     
     return X, y, category_names
 
 
 def tokenize(text):
+    '''
+    this function does the following:
+    - replace URL with the hard coded string of "urlplaceholder"
+    - tokenize text into words 
+    - lemmatize tokens, change to lower case, and trim spaces
+    - return the resulting clean tokens
+    '''
     detected_urls = re.findall(url_regex, text)
     for url in detected_urls:
         text = text.replace(url, "urlplaceholder")
@@ -61,6 +75,12 @@ def tokenize(text):
     return clean_tokens
     
 def build_model():
+    '''
+    this function does the following:
+    - build a machine learning pipeline 
+    - set up hyper-parameters tuning options
+    - create and return a GridSearchCV object
+    '''
     pipeline = Pipeline([
         ('features', FeatureUnion([
 
@@ -75,8 +95,8 @@ def build_model():
         ('clf', MultiOutputClassifier(KNeighborsClassifier()))
     ])
 
-    '''
-    # take too long to run on laptop, comment out for now
+    
+    # set up hyper-parameters tuning options
     parameters = {
         'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
         'features__text_pipeline__vect__max_df': (0.5, 0.75),
@@ -90,31 +110,45 @@ def build_model():
     }
 
     cv = GridSearchCV(pipeline, param_grid=parameters)
-    
-    cv.fit(X_train, y_train)
+
+    return cv
+
+
+def evaluate_model(model, X_test, y_test, category_names): 
     '''
-
-    return pipeline
-
-
-def evaluate_model(model, X_test, y_test, category_names):   
+    this function does the following:
+    - use the provided machine learning pipeline (i.e., model) to predct categories of messages
+    - print out the model performance evaluation results
+    '''
     # predicting results using testing data
     y_pred = model.predict(X_test)
     
     # evaluating model performance
-    labels_list = list(range(0,36))
+    labels_list = list(range(0,72))
     for col, target_name in enumerate(category_names):  
         print(classification_report(y_test[:,col], y_pred[:, col], labels=[labels_list[col]]))
 
 
 def save_model(model, model_filepath):
-    # model = cv.best_estimator_
-    
+    '''
+    save the model (machine learning pipeline) into Python pickle file
+    '''
     # save the model to disk
     filename = model_filepath
     pickle.dump(model, open(filename, 'wb'))
 
 def main():
+    '''
+    this main function does the following:
+    - get arguments (database file path and model file path) from command line
+    - get features, targets (categories), and catgory names from database
+    - divide features and targets into two parts: one for model training and the other for model testing
+    - build a GridSearchCV object
+    - train the GridSearchCV object
+    - get the best model (i.e., machine learning pipeline) from the trained GridSearchCV object
+    - evaluate the model performance
+    - save the model into Python pickle file
+    '''
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
@@ -122,12 +156,13 @@ def main():
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
         
         print('Building model...')
-        model = build_model()
+        cv = build_model()
         
         print('Training model...')
-        model.fit(X_train, Y_train)
+        cv.fit(X_train, Y_train)
         
         print('Evaluating model...')
+        model = cv.best_estimator_
         evaluate_model(model, X_test, Y_test, category_names)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
