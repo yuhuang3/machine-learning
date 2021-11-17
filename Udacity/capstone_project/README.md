@@ -14,5 +14,5 @@ More information is available in my blog [Predicting Hospitalized Time of Covid-
 3. Run the Jupyter notebook
 
 ### Acknowledgments
-I would like to thank Udacity for its excellent data scientist training program, my mentor for the project review, and Kaggle for the Covid-19 dataset.
+I would like to thank Udacity for its excellent data scientist training program, the project review, and Kaggle for the Covid-19 dataset.
 
