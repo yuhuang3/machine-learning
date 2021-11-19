@@ -14590,13 +14590,13 @@ The dataset for this project is obtained from <a href="https://www.kaggle.com/ne
 <li>Test_data.csv: containing features related to patient, hospital. Need to predict the “length” of stay for each case id</li>
 <li>Train_data_dictionary.csv: containing the information of the features in train and test files.</li>
 </ol>
-<p>As shown in the table below, there are total 17 features and 1 label column ("Stay") in this dataset.</p>
+<p>As shown in the table below, there are 318,438 data samples, total 17 features and 1 label column ("Stay") in this dataset.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;train_data.csv&#39;</span><span class="p">)</span> 
@@ -14629,7 +14629,7 @@ The dataset for this project is obtained from <a href="https://www.kaggle.com/ne
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 
 
 
@@ -14963,7 +14963,7 @@ The dataset for this project is obtained from <a href="https://www.kaggle.com/ne
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>The following diagram shows the distribution of the numeric features:</p>
+<p>The following table provides a statistical summary of the numeric features:</p>
 <ul>
 <li>case_id</li>
 <li>Hospital_code</li>
@@ -14975,7 +14975,176 @@ The dataset for this project is obtained from <a href="https://www.kaggle.com/ne
 <li>Visitors with Patient</li>
 <li>Admission_Deposit</li>
 </ul>
-<p>It can be seen that the case_id feature values are uniformly distributed because they are unique sequential numbers. This feature can be dropped due to lack of prediction power.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>case_id</th>
+      <th>Hospital_code</th>
+      <th>City_Code_Hospital</th>
+      <th>Available Extra Rooms in Hospital</th>
+      <th>Bed Grade</th>
+      <th>patientid</th>
+      <th>City_Code_Patient</th>
+      <th>Visitors with Patient</th>
+      <th>Admission_Deposit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>318438.000000</td>
+      <td>318438.000000</td>
+      <td>318438.000000</td>
+      <td>318438.000000</td>
+      <td>318325.000000</td>
+      <td>318438.000000</td>
+      <td>313906.000000</td>
+      <td>318438.000000</td>
+      <td>318438.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>159219.500000</td>
+      <td>18.318841</td>
+      <td>4.771717</td>
+      <td>3.197627</td>
+      <td>2.625807</td>
+      <td>65747.579472</td>
+      <td>7.251859</td>
+      <td>3.284099</td>
+      <td>4880.749392</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>91925.276848</td>
+      <td>8.633755</td>
+      <td>3.102535</td>
+      <td>1.168171</td>
+      <td>0.873146</td>
+      <td>37979.936440</td>
+      <td>4.745266</td>
+      <td>1.764061</td>
+      <td>1086.776254</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1800.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>79610.250000</td>
+      <td>11.000000</td>
+      <td>2.000000</td>
+      <td>2.000000</td>
+      <td>2.000000</td>
+      <td>32847.000000</td>
+      <td>4.000000</td>
+      <td>2.000000</td>
+      <td>4186.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>159219.500000</td>
+      <td>19.000000</td>
+      <td>5.000000</td>
+      <td>3.000000</td>
+      <td>3.000000</td>
+      <td>65724.500000</td>
+      <td>8.000000</td>
+      <td>3.000000</td>
+      <td>4741.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>238828.750000</td>
+      <td>26.000000</td>
+      <td>7.000000</td>
+      <td>4.000000</td>
+      <td>3.000000</td>
+      <td>98470.000000</td>
+      <td>8.000000</td>
+      <td>4.000000</td>
+      <td>5409.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>318438.000000</td>
+      <td>32.000000</td>
+      <td>13.000000</td>
+      <td>24.000000</td>
+      <td>4.000000</td>
+      <td>131624.000000</td>
+      <td>38.000000</td>
+      <td>32.000000</td>
+      <td>11008.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The diagram below shows the distribution of the numeric features visually. It can be seen that the case_id feature values are uniformly distributed because they are unique sequential numbers. This feature can be dropped due to lack of prediction power.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -15169,6 +15338,60 @@ The dataset for this project is obtained from <a href="https://www.kaggle.com/ne
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>The number of data samples in each label category is shown below.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;Stay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>21-30                 87491
+11-20                 78139
+31-40                 55159
+51-60                 35018
+0-10                  23604
+41-50                 11743
+71-80                 10254
+More than 100 Days     6683
+81-90                  4838
+91-100                 2765
+61-70                  2744
+Name: Stay, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="3.-Data-Preparation-">3. Data Preparation <a class="anchor" id="data_preparation" /><a class="anchor-link" href="#3.-Data-Preparation-">&#182;</a></h2><p>Once the data is understood, the next step is data preparation. The main goal is to explore, clean and transform the collected raw dataset into appropriate format so that the transformed data can be effectively consumed by a target machine learning model.</p>
 <h3 id="3.1.-Handling-missing-data">3.1. Handling missing data<a class="anchor-link" href="#3.1.-Handling-missing-data">&#182;</a></h3><p>As shown in the list below, there are 113 missing data in the 'Bed Grade' feature column and 4,532 missing data in the 'City_Code_Patient' feature column. The total number of missing data is relatively small (4,645) compared with the dataset size of 318,438 rows. In this case we can either drop the rows with missing data or replace with missing data with '0'. I choose to replace the missing data with '0' in order to be able to predict results for data samples with missing data in deployment. Refer to the <code>DataCleaning</code> class in <code>data_preprocessing.py</code> for details.</p>
 
@@ -15297,7 +15520,7 @@ dtype: int64</pre>
 <li>Identify potential machine learning models</li>
 <li>Train models and tune the hyper-parameters of models</li>
 </ul>
-<h3 id="4.1.-Model-Selection">4.1. Model Selection<a class="anchor-link" href="#4.1.-Model-Selection">&#182;</a></h3><p>This project is to address a classification issue because the label is categorical. This is suitable for supervised machine learning classification models such as XGBoost, Random Forest, deep learning MLP classifiers.</p>
+<h3 id="4.1.-Model-Selection">4.1. Model Selection<a class="anchor-link" href="#4.1.-Model-Selection">&#182;</a></h3><p>This project is to address a multi-classes classification issue because the label is categorical with more than 2 categories. This is suitable for supervised machine learning classification models such as XGBoost, Random Forest, deep learning MLP classifiers.</p>
 <p>Because the data is in tabular format and the number of features is relatively small, XGBoost and Random Forest are generally preferred compared with deep learning models.</p>
 <p>In this project XGBoost, Random Forest, and MLP classifiers are selected for experiments.</p>
 
@@ -15316,12 +15539,15 @@ dtype: int64</pre>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="5.-Model-Evaluation-">5. Model Evaluation <a class="anchor" id="model_evaluation" /><a class="anchor-link" href="#5.-Model-Evaluation-">&#182;</a></h2><p>Once different machine learning models have been trained, the performance of these models needs to be evaluated so that we can select the best model for deployment. The classification accuracy and confusion matrix are used as the main evaluation metrics for this project. Refer to the following functions in <code>train_test_classifier.py</code> for details:</p>
+<h2 id="5.-Model-Evaluation-">5. Model Evaluation <a class="anchor" id="model_evaluation" /><a class="anchor-link" href="#5.-Model-Evaluation-">&#182;</a></h2><p>Once different machine learning models have been trained, the performance of these models needs to be evaluated so that we can select the best model for deployment. The classification accuracy, F1 score, and confusion matrix are used as the main evaluation metrics for this project. Refer to the following functions in <code>train_test_classifier.py</code> for details:</p>
 <ul>
 <li>evaluate_xgboost_model</li>
 <li>evaluate_rf_model</li>
 <li>evaluate_dl_model</li>
 </ul>
+<p>Typically the accuracy is not a good metric in the case of binary classification with imbalanced data because it can easily achieve high percentage of accuracy by simply predicting the majority class. However this is not necessary the case in multi-classes classification. For example, in the dataset for this project, there are only 87,491 data samples for the majority class 21-30. The total number of data samples is 318,438. If a model always predicts the majority class, the accuracy would be about 27.5%. Thus the accuracy can still be a good model performance measurement in the case of multi-classes classification since it represents the average accuracy of classifications of different label classes.</p>
+<p>In addition to accuracy, F1 score is used to measure both XGBoost and Random Forest model performance as well since it can measure the balance of precision and recall, which is suitable for imbalanced data.</p>
+<p>The confusion matrix is used because it can clearly tell us what prediction mistakes a model made.</p>
 <h3 id="5.1.-MLFlow">5.1. MLFlow<a class="anchor-link" href="#5.1.-MLFlow">&#182;</a></h3><p>In order to effectively tracking model hyper-parameters and performance metrics, the MLFlow tool is used. In particular, I developed the function <code>mlFlow()</code> in <code>train_test_classifier.py</code> to combine the following activities into one procedure:</p>
 <ul>
 <li>Loading training data</li>
@@ -15394,21 +15620,22 @@ MODEL TRAINING:
 
 Fitting 10 folds for each of 1 candidates, totalling 10 fits
 [CV 1/10] END .....eval_metric=auc, max_depth=6;, score=0.425 total time= 1.2min
-[CV 2/10] END .....eval_metric=auc, max_depth=6;, score=0.424 total time= 1.1min
-[CV 3/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.1min
-[CV 4/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.1min
+[CV 2/10] END .....eval_metric=auc, max_depth=6;, score=0.424 total time= 1.2min
+[CV 3/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.2min
+[CV 4/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.2min
 [CV 5/10] END .....eval_metric=auc, max_depth=6;, score=0.417 total time= 1.1min
-[CV 6/10] END .....eval_metric=auc, max_depth=6;, score=0.421 total time= 1.1min
-[CV 7/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.1min
-[CV 8/10] END .....eval_metric=auc, max_depth=6;, score=0.427 total time= 1.1min
-[CV 9/10] END .....eval_metric=auc, max_depth=6;, score=0.424 total time= 1.1min
-[CV 10/10] END ....eval_metric=auc, max_depth=6;, score=0.423 total time= 1.1min
+[CV 6/10] END .....eval_metric=auc, max_depth=6;, score=0.421 total time= 1.2min
+[CV 7/10] END .....eval_metric=auc, max_depth=6;, score=0.426 total time= 1.2min
+[CV 8/10] END .....eval_metric=auc, max_depth=6;, score=0.427 total time= 1.2min
+[CV 9/10] END .....eval_metric=auc, max_depth=6;, score=0.424 total time= 1.2min
+[CV 10/10] END ....eval_metric=auc, max_depth=6;, score=0.423 total time= 1.2min
 Best hyper-parameters:
  {&#39;eval_metric&#39;: &#39;auc&#39;, &#39;max_depth&#39;: 6}
 
 MODEL EVALUATION: 
 
 Accuracy score:  0.4238914709207386
+F1 score:  0.3896275013089962
 
  ML FLOW DONE. 
 
