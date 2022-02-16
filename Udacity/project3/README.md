@@ -18,5 +18,5 @@ The corresponding Jupyter notebook is organized as follows:
 3. Run the Jupyter notebook
 
 ### Acknowledgments
-I would like to thank Udacity for its excellent data scientist training program and my mentor for the project review.
+I would like to thank Udacity for its excellent data scientist training program and the project review.
 
